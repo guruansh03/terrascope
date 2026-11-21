@@ -1,0 +1,25 @@
+# TerraScope - CPU-only demo laptop (installed by start_local.bat into .venv-demo).
+#
+# torch: CPU build. start_local.bat installs with  --extra-index-url https://download.pytorch.org/whl/cpu
+# (on Windows the PyPI torch wheel is the CPU build as well). Offline: make_demo_bundle.py --with-wheels
+# puts every wheel in wheels/ and start_local.bat installs with  --no-index --find-links wheels
+#
+# No terratorch here: the foundation models (Prithvi-EO-2.0, TerraMind) run from ONNX files exported on the PC
+# (TERRASCOPE_RUNTIME=onnx, onnxruntime CPU). requirements-pc.txt (terratorch + export/test tools) resolves to 138
+# Windows packages vs 44 for this file (lightning, torchgeo, geopandas, pyarrow, diffusers, ...; uv, 2026-11-04),
+# all useless on an offline CPU laptop once ONNX files exist. If an FM could not be exported to ONNX,
+# make_demo_bundle.py --include-terratorch appends terratorch==1.2.13 to the bundle's copy of this file.
+#
+# Ranges (not exact pins) so it resolves on Python 3.10-3.13 (verified 2026-11-04 with uv pip compile for
+# x86_64-pc-windows-msvc, binary wheels only). The exact set used for a bundle is frozen in its wheels/ folder.
+torch>=2.7
+numpy>=1.26,<3
+scipy>=1.11
+matplotlib>=3.8
+pillow>=10
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+onnxruntime>=1.20
+rasterio>=1.4
+psutil>=5.9
